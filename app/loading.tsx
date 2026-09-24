@@ -1,6 +1,6 @@
 function FilterBarSkeleton() {
   return (
-    <div className="flex items-center justify-between border-b border-gray-200 px-1 py-3 dark:border-ghline">
+    <div className="flex items-center justify-between border-b border-gray-200 py-3 dark:border-ghline">
       <div className="h-8 w-40 animate-pulse motion-reduce:animate-none rounded-lg bg-gray-200 dark:bg-gray-700" />
       <div className="h-8 w-32 animate-pulse motion-reduce:animate-none rounded-lg bg-gray-200 dark:bg-gray-700" />
     </div>
@@ -39,7 +39,7 @@ export default function Loading() {
   return (
     <div className="mx-auto max-w-3xl px-4" aria-hidden="true">
       <FilterBarSkeleton />
-      <ul className="mt-4 space-y-3">
+      <ul className="mt-4 space-y-4">
         {Array.from({ length: 5 }).map((_, i) => (
           <CardSkeleton key={i} />
         ))}

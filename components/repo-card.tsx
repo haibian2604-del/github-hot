@@ -152,7 +152,7 @@ export default function RepoCard({
                 {changeLabel(since)} +{formatCompactNumber(repo.change)}
               </span>
               {repo.contributors.length > 0 && (
-                <span className="ml-auto flex -space-x-1.5">
+                <span className="flex -space-x-1.5 sm:ml-auto">
                   {repo.contributors.slice(0, 5).map((c, i) => (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -214,7 +214,7 @@ export default function RepoCard({
                 </div>
               )}
 
-              <div className="mt-3.5 flex flex-wrap items-center gap-2">
+              <div className="mt-4 flex flex-wrap items-center gap-2">
                 <a
                   href={repo.repoUrl}
                   target="_blank"

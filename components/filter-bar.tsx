@@ -38,7 +38,7 @@ export default function FilterBar({
 
   return (
     <div
-      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-gray-200 bg-white/95 px-1 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-ghline dark:bg-ghcard/95 ${
+      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-gray-200 bg-white/95 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-ghline dark:bg-ghcard/95 ${
         busy ? "opacity-50" : "opacity-100"
       }`}
       aria-busy={busy}

@@ -3,7 +3,7 @@ import type { Since, TrendingRepo } from "@/lib/trending";
 
 export default function RepoList({ repos, since }: { repos: TrendingRepo[]; since: Since }) {
   return (
-    <ol className="space-y-3">
+    <ol className="space-y-4">
       {repos.map((repo, i) => (
         <RepoCard key={`${repo.owner}/${repo.name}`} repo={repo} rank={i + 1} since={since} />
       ))}
