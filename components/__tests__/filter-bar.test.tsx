@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import FilterBar from "@/components/filter-bar";
@@ -44,5 +44,36 @@ describe("FilterBar", () => {
     render(<FilterBar languages={languages} filters={{ lang: "go", since: "monthly" }} />);
     expect((screen.getByRole("combobox") as HTMLSelectElement).value).toBe("go");
     expect(screen.getByRole("button", { name: "本月" })).toHaveAttribute("data-active", "true");
+  });
+});
+
+describe("FilterBar（客户端缓存模式增量）", () => {
+  const onFilterChange = vi.fn();
+
+  beforeEach(() => {
+    push.mockClear();
+    onFilterChange.mockClear();
+  });
+
+  it("calls onFilterChange instead of router.push when the callback is provided", async () => {
+    const user = userEvent.setup();
+    render(
+      <FilterBar
+        languages={languages}
+        filters={{ lang: "", since: "daily" }}
+        onFilterChange={onFilterChange}
+      />
+    );
+    await user.click(screen.getByRole("button", { name: "本周" }));
+    expect(onFilterChange).toHaveBeenCalledTimes(1);
+    expect(onFilterChange).toHaveBeenCalledWith({ lang: "", since: "weekly" });
+    expect(push).not.toHaveBeenCalled();
+  });
+
+  it("marks the container aria-busy when external pending is true", () => {
+    const { container } = render(
+      <FilterBar languages={languages} filters={{ lang: "", since: "daily" }} pending />
+    );
+    expect(container.firstChild).toHaveAttribute("aria-busy", "true");
   });
 });

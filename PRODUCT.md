@@ -27,6 +27,7 @@ GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言�
 - 数据源：`https://trend.doforce.dpdns.org`（`/repo`、`/lang`）；无 CORS 头 → 必须服务端请求；出错仍返回 200+`[]`；单次最多 25 条（实测某日仅 17 条，不得假定满额）。
 - 技术约束：Next.js 14.2 (App Router) + React 18 + Tailwind 3.4 + TypeScript + 原生 fetch + pnpm；运行时零额外依赖（规格 docs/development-plan.md §2）。
 - 明确不做：登录、收藏、搜索、热门开发者 Tab、分页、手动主题切换、商业化。
+- 客户端切换缓存：/api/trending 同源代理 + 会话内存缓存，回切已看过的筛选组合零延迟（2026-09-24 用户确认）。
 
 ## Brand Commitments
 

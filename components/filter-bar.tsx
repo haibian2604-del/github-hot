@@ -13,23 +13,35 @@ const SINCE_TABS: { value: Since; label: string }[] = (
 export default function FilterBar({
   languages,
   filters,
+  onFilterChange,
+  pending,
 }: {
   languages: LanguageOption[];
   filters: FilterState;
+  // 提供时优先于 router.push（客户端切换缓存模式）；不传时行为与原先完全一致
+  onFilterChange?: (next: FilterState) => void;
+  // 外部 pending（客户端取数进行中）
+  pending?: boolean;
 }) {
   const router = useRouter();
-  const [pending, startTransition] = useTransition();
+  const [transitionPending, startTransition] = useTransition();
 
   const apply = (next: FilterState) => {
+    if (onFilterChange) {
+      onFilterChange(next);
+      return;
+    }
     startTransition(() => router.push(buildFilterPath(next)));
   };
+
+  const busy = pending || transitionPending;
 
   return (
     <div
       className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-gray-200 bg-white/95 px-1 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-ghline dark:bg-ghcard/95 ${
-        pending ? "opacity-50" : "opacity-100"
+        busy ? "opacity-50" : "opacity-100"
       }`}
-      aria-busy={pending}
+      aria-busy={busy}
     >
       <div
         role="group"

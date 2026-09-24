@@ -92,7 +92,7 @@ Base URL：`https://trend.doforce.dpdns.org`（FastAPI，托管于 Vercel，Swag
 
 - **URL 驱动筛选**：`/?lang=python&since=weekly`。筛选变更由 `FilterBar` 通过 `router.push` 更新 searchParams，服务端重新取数渲染。换来的好处：筛选结果可分享/可收藏、浏览器前进后退可用、首屏即含数据（利于 SEO 与 LCP）。
 - **缓存策略**：trending 数据 `next: { revalidate: 3600 }`（上游页面约每小时更新）；`/lang` 列表基本不变 `revalidate: 86400`。同一筛选的重复访问直接命中 Vercel 边缘缓存，不回源。
-- **不建自用 API 路由**：RSC 直连上游即可；若后续要做"前端定时自动刷新"再补 `/api/trending` 代理（见二期）。
+- **不建自用 API 路由**：~~RSC 直连上游即可~~ → 2026-09-24 用户确认新增客户端切换缓存：/api/trending 同源代理（复用 1h Data Cache）+ RepoBrowser 会话内存缓存；首屏 SSR、URL 可分享、错误链路全部保持不变。
 - **展开为纯客户端状态**：`useState` 记录展开的卡片，多卡可同时展开，不写 URL（避免 URL 噪音）。
 
 ---
