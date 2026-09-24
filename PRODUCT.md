@@ -28,6 +28,7 @@ GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言�
 - 技术约束：Next.js 14.2 (App Router) + React 18 + Tailwind 3.4 + TypeScript + 原生 fetch + pnpm；运行时零额外依赖（规格 docs/development-plan.md §2）。
 - 明确不做：登录、收藏、搜索、热门开发者 Tab、分页、手动主题切换、商业化。
 - 客户端切换缓存：/api/trending 同源代理 + 会话内存缓存，回切已看过的筛选组合零延迟（2026-09-24 用户确认）。
+- 语言筛选：仅展示热门语言白名单（30 项策展清单，与语言色点同源）；URL 中出现非白名单语言自动回落全部（2026-09-24 用户确认）。
 
 ## Brand Commitments
 

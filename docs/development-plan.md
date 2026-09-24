@@ -10,7 +10,7 @@
 构建一个 GitHub Trending 浏览页（仓库当前仅有一个 README），数据来自 doforce/github-trending 公共 API。核心能力：
 
 1. **热门仓库列表**：展示每周期（今天/本周/本月）GitHub 热门仓库，单页最多 25 条。
-2. **筛选**：按编程语言（约 700 种，来自 API `/lang`）+ 时间周期（daily / weekly / monthly）筛选，筛选状态写入 URL，可分享、可回退。
+2. **筛选**：按编程语言（热门语言白名单 30 项，来自 API `/lang` 过滤）+ 时间周期（daily / weekly / monthly）筛选，筛选状态写入 URL，可分享、可回退。
 3. **卡片展开**：点击卡片展开详情区（完整描述、贡献者、操作链接），再点收起。
 4. **部署**：Vercel 零配置部署。
 
@@ -162,7 +162,7 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 1. **Header**：站名 "GitHub Hot" + 一句话副标题 + 数据来源链接。
 2. **FilterBar（吸顶）**：
    - 周期切换：分段控件「今天 / 本周 / 本月」（→ `since`）。
-   - 语言选择：`<select>`，选项来自 `/lang`，含「全部语言」+ 按字母排序（→ `lang`，取 `key`）。
+   - 语言选择：`<select>`，选项为热门语言白名单（30 项，按流行度排序，来自 `/lang` 过滤），含「全部语言」（→ `lang`，取 `key`；2026-09-24 用户确认由全量 ~700 项收敛）。
    - 变更即 `router.push(新URL)`，配合 `useTransition` 显示待刷新态（FilterBar 半透明/转圈）。
 3. **RepoList**：25 张卡片，序号 1–25。
 
