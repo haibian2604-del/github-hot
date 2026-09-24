@@ -27,7 +27,7 @@ export default function FilterBar({
 
   return (
     <div
-      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-gray-200 bg-white/95 px-1 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-[#30363d] dark:bg-[#161b22]/95 ${
+      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-gray-200 bg-white/95 px-1 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-ghline dark:bg-ghcard/95 ${
         pending ? "opacity-50" : "opacity-100"
       }`}
       aria-busy={pending}
@@ -35,13 +35,14 @@ export default function FilterBar({
       <div
         role="group"
         aria-label="时间周期"
-        className="inline-flex self-start rounded-lg border border-gray-300 bg-gray-50 p-0.5 dark:border-[#30363d] dark:bg-[#0d1117]"
+        className="inline-flex self-start rounded-lg border border-gray-300 bg-gray-50 p-0.5 dark:border-ghline dark:bg-ghcanvas"
       >
         {SINCE_TABS.map(({ value, label }) => (
           <button
             key={value}
             type="button"
             data-active={filters.since === value}
+            aria-pressed={filters.since === value}
             onClick={() => apply({ ...filters, since: value })}
             className={`rounded-md px-3 py-1 text-sm transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 dark:focus-visible:ring-gray-500 ${
               filters.since === value
@@ -60,7 +61,7 @@ export default function FilterBar({
           <select
             value={filters.lang}
             onChange={(e) => apply({ ...filters, lang: e.target.value })}
-            className="appearance-none rounded-lg border border-gray-300 bg-white py-1.5 pl-2.5 pr-8 text-sm text-gray-900 transition-colors duration-150 ease-out hover:border-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 motion-reduce:transition-none dark:border-[#30363d] dark:bg-[#0d1117] dark:text-gray-100 dark:hover:border-gray-500 dark:focus-visible:ring-gray-500"
+            className="appearance-none rounded-lg border border-gray-300 bg-white py-1.5 pl-2.5 pr-8 text-sm text-gray-900 transition-colors duration-150 ease-out hover:border-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 motion-reduce:transition-none dark:border-ghline dark:bg-ghcanvas dark:text-gray-100 dark:hover:border-gray-500 dark:focus-visible:ring-gray-500"
           >
             <option value="">全部语言</option>
             {languages.map((l) => (

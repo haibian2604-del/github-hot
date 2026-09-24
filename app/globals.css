@@ -2,22 +2,30 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/*
+ * 系统字体栈（含中文回退）。
+ * body 的画布底色 / 前景色由 app/layout.tsx 的 Tailwind 工具类提供
+ * （bg-ghcanvas-light dark:bg-ghcanvas 等），此处不再另行覆盖。
+ */
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
+    "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+/*
+ * 卡片展开动画 keyframes。
+ * 全局样式表只此一份：原先内联在每张展开的 RepoCard 里，会随列表重复注入。
+ * 使用处：components/repo-card.tsx 的 motion-safe:animate-[repo-card-expand_180ms_ease-out]。
+ */
+@keyframes repo-card-expand {
+  from {
+    grid-template-rows: 0fr;
+    opacity: 0.5;
+  }
+  to {
+    grid-template-rows: 1fr;
+    opacity: 1;
+  }
 }
 
 @layer utilities {

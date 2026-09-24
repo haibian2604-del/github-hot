@@ -1,6 +1,6 @@
 function FilterBarSkeleton() {
   return (
-    <div className="flex items-center justify-between border-b border-gray-200 px-1 py-3 dark:border-[#30363d]">
+    <div className="flex items-center justify-between border-b border-gray-200 px-1 py-3 dark:border-ghline">
       <div className="h-8 w-40 animate-pulse motion-reduce:animate-none rounded-lg bg-gray-200 dark:bg-gray-700" />
       <div className="h-8 w-32 animate-pulse motion-reduce:animate-none rounded-lg bg-gray-200 dark:bg-gray-700" />
     </div>
@@ -9,7 +9,7 @@ function FilterBarSkeleton() {
 
 function CardSkeleton() {
   return (
-    <li className="rounded-lg border border-gray-200 bg-white p-4 dark:border-[#30363d] dark:bg-[#161b22]">
+    <li className="rounded-lg border border-gray-200 bg-white p-4 dark:border-ghline dark:bg-ghcard">
       {/* 与 RepoCard 同构：大排名 / 身份行（owner+名称+描述）/ 元信息行 / chevron */}
       <div className="flex items-start gap-3 sm:gap-4">
         <div className="h-8 w-12 shrink-0 animate-pulse motion-reduce:animate-none rounded bg-gray-200 sm:h-9 sm:w-14 dark:bg-gray-700" />
@@ -37,9 +37,9 @@ function CardSkeleton() {
 
 export default function Loading() {
   return (
-    <div className="mx-auto max-w-3xl px-4">
+    <div className="mx-auto max-w-3xl px-4" aria-hidden="true">
       <FilterBarSkeleton />
-      <ul className="mt-4 space-y-3" aria-hidden="true">
+      <ul className="mt-4 space-y-3">
         {Array.from({ length: 5 }).map((_, i) => (
           <CardSkeleton key={i} />
         ))}
