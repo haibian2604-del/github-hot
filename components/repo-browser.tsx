@@ -7,6 +7,7 @@ import RepoList from "@/components/repo-list";
 import { CardSkeleton } from "@/components/skeletons";
 import { EmptyState } from "@/components/states";
 import { buildFilterPath, parseFilters, type FilterState } from "@/lib/filter";
+import { changeLabel } from "@/lib/format";
 import type { LanguageOption, TrendingRepo } from "@/lib/trending";
 
 // 挂载/切换语言后延迟多久开始静默预热其余时间周期。
@@ -202,7 +203,15 @@ export default function RepoBrowser({
         ) : repos.length === 0 ? (
           <EmptyState lang={langLabel} />
         ) : (
-          <RepoList repos={repos} since={filters.since} />
+          <>
+            {/* 结果摘要：让筛选变化立即可见 —— 即使选中语言恰为整体榜的前几名（列表是原榜子集），周期/语言/条数也明确变了 */}
+            <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+              {changeLabel(filters.since)} · {filters.lang ? langLabel : "全部语言"} · {repos.length} 个仓库
+            </p>
+            <div className="mt-3">
+              <RepoList repos={repos} since={filters.since} />
+            </div>
+          </>
         )}
       </div>
     </>

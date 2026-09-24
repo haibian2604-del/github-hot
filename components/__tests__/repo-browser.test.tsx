@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } 
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RepoBrowser from "@/components/repo-browser";
+import { changeLabel } from "@/lib/format";
 import { buildFilterPath } from "@/lib/filter";
 import type { TrendingRepo } from "@/lib/trending";
 
@@ -114,6 +115,21 @@ describe("RepoBrowser", () => {
     expect(screen.queryByText("weekly-repo")).not.toBeInTheDocument();
     expect(screen.getByText("daily-repo")).toBeInTheDocument();
     expect(window.location.search).toBe("?since=daily");
+  });
+
+  it("shows a result summary line above the list on initial render", () => {
+    setup({ lang: "", since: "daily" }, [repo("alpha"), repo("beta")]);
+    expect(screen.getByText(`${changeLabel("daily")} · 全部语言 · 2 个仓库`)).toBeInTheDocument();
+  });
+
+  it("updates the summary line with the selected language label and count after a language switch", async () => {
+    const user = userEvent.setup();
+    setup({ lang: "", since: "daily" }, [repo("all-daily")]);
+    mockFetch.mockResolvedValueOnce(okResponse([repo("py-a"), repo("py-b"), repo("py-c")]));
+    await user.selectOptions(screen.getByRole("combobox"), "python");
+    await waitFor(() =>
+      expect(screen.getByText(`${changeLabel("daily")} · Python · 3 个仓库`)).toBeInTheDocument()
+    );
   });
 
   it("renders EmptyState when the proxy returns an empty list", async () => {
