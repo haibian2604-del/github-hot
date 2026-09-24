@@ -1,7 +1,7 @@
 export default function SiteHeader() {
   return (
     <header className="border-b bg-white dark:bg-ghcard">
-      <div className="mx-auto flex max-w-3xl flex-col gap-y-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto flex max-w-5xl flex-col gap-y-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="text-2xl font-bold tracking-tight">GitHub Hot 🔥</h1>
         <a
           href="https://github.com/doforce/github-trending"

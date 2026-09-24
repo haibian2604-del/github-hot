@@ -37,10 +37,10 @@ function CardSkeleton() {
 
 export default function Loading() {
   return (
-    <div className="mx-auto max-w-3xl px-4" aria-hidden="true">
+    <div className="mx-auto max-w-5xl px-4" aria-hidden="true">
       <FilterBarSkeleton />
-      <ul className="mt-4 space-y-4">
-        {Array.from({ length: 5 }).map((_, i) => (
+      <ul className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+        {Array.from({ length: 6 }).map((_, i) => (
           <CardSkeleton key={i} />
         ))}
       </ul>

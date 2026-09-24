@@ -103,13 +103,13 @@ export default function RepoCard({
   };
 
   return (
-    <li className="overflow-hidden rounded-lg border border-gray-200 bg-white transition-[border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none hover:border-gray-300 hover:shadow-md hover:shadow-gray-900/5 dark:border-ghline dark:bg-ghcard dark:hover:border-[#484f58] dark:hover:shadow-black/30">
+    <li className="flex h-full flex-col overflow-hidden rounded-lg border border-gray-200 bg-white transition-[border-color,box-shadow] duration-200 ease-out motion-reduce:transition-none hover:border-gray-300 hover:shadow-md hover:shadow-gray-900/5 dark:border-ghline dark:bg-ghcard dark:hover:border-[#484f58] dark:hover:shadow-black/30">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
         aria-controls={panelId}
-        className="w-full rounded-[inherit] px-4 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gray-400 dark:focus-visible:ring-gray-500"
+        className="w-full flex-1 rounded-[inherit] px-4 py-4 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gray-400 dark:focus-visible:ring-gray-500"
       >
         <div className="flex items-start gap-3 sm:gap-4">
           <span
