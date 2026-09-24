@@ -11,7 +11,7 @@ export function changeLabel(since: Since): string {
 }
 
 function trimOne(v: number): string {
-  const s = v >= 100 ? Math.round(v).toString() : v.toFixed(1);
+  const s = v >= 100 ? String(Math.min(999, Math.round(v))) : v.toFixed(1);
   return s.endsWith(".0") ? s.slice(0, -2) : s;
 }
 
