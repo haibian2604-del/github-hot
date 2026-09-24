@@ -11,7 +11,7 @@
 
 1. **热门仓库列表**：展示每周期（今天/本周/本月）GitHub 热门仓库，单页最多 25 条。
 2. **筛选**：按编程语言（热门语言白名单 30 项，来自 API `/lang` 过滤）+ 时间周期（daily / weekly / monthly）筛选，筛选状态写入 URL，可分享、可回退。
-3. **卡片展开**：点击卡片展开详情区（完整描述、贡献者、操作链接），再点收起。
+3. **卡片直链**：整卡为直达链接，点击新标签页打开对应 GitHub 仓库（target=_blank + noopener），无展开面板。
 4. **部署**：Vercel 零配置部署。
 
 **明确不做**（当前范围外）：登录、收藏、搜索、热门开发者 Tab（API 有 `/user` 端点，列为可选二期）。
@@ -23,7 +23,7 @@
 | 项 | 选型 | 说明 |
 |---|---|---|
 | 框架 | **Next.js 14.2.x（App Router）** | 要求 React 18，故锁定 14.x 大版本（Next 15 强制 React 19） |
-| UI 运行时 | **React 18.3.x** | 仅 `use client` 用于筛选栏与卡片展开，其余为 Server Component |
+| UI 运行时 | **React 18.3.x** | 仅 `use client` 用于筛选栏与列表刷新（FilterBar/RepoBrowser），其余为 Server Component |
 | 样式 | **Tailwind CSS 3.4.x** | 与 Next 14 配套的稳定版本；不用任何组件库 |
 | 数据获取 | **原生 fetch**（Server Component 内调用） | 不引入 axios / SWR / react-query |
 | 语言 | **TypeScript**（推荐，见待确认项 ①） | 接口字段强类型，成本低收益高 |
@@ -85,7 +85,7 @@ Base URL：`https://trend.doforce.dpdns.org`（FastAPI，托管于 Vercel，Swag
                                             │    ├─ fetch /repo?lang&since   (revalidate 1h)
                                             │    └─ fetch /lang              (revalidate 24h)
                                             ├─ 服务端渲染列表 HTML
-                                            └─ 客户端交互：FilterBar 改 URL、RepoCard 本地展开
+                                            └─ 客户端交互：FilterBar 改 URL、RepoBrowser 会话缓存/待刷新态
 ```
 
 **关键决策**
@@ -93,7 +93,7 @@ Base URL：`https://trend.doforce.dpdns.org`（FastAPI，托管于 Vercel，Swag
 - **URL 驱动筛选**：`/?lang=python&since=weekly`。筛选变更由 `FilterBar` 通过 `router.push` 更新 searchParams，服务端重新取数渲染。换来的好处：筛选结果可分享/可收藏、浏览器前进后退可用、首屏即含数据（利于 SEO 与 LCP）。
 - **缓存策略**：trending 数据 `next: { revalidate: 3600 }`（上游页面约每小时更新）；`/lang` 列表基本不变 `revalidate: 86400`。同一筛选的重复访问直接命中 Vercel 边缘缓存，不回源。
 - **不建自用 API 路由**：~~RSC 直连上游即可~~ → 2026-09-24 用户确认新增客户端切换缓存：/api/trending 同源代理（复用 1h Data Cache）+ RepoBrowser 会话内存缓存；首屏 SSR、URL 可分享、错误链路全部保持不变。
-- **展开为纯客户端状态**：`useState` 记录展开的卡片，多卡可同时展开，不写 URL（避免 URL 噪音）。
+- **卡片无本地状态**：RepoCard 为服务端组件，整卡直链 GitHub，不引入额外 URL 参数（2026-09-24 用户确认移除展开功能）。
 
 ---
 
@@ -111,7 +111,7 @@ github-hot/
 ├── components/
 │   ├── header.tsx            # 站点标题 + 数据来源署名
 │   ├── filter-bar.tsx        # 客户端：语言下拉 + 周期切换（写 URL）
-│   ├── repo-card.tsx         # 客户端：单张卡片 + 展开区
+│   ├── repo-card.tsx         # 服务端：单张卡片（整卡直链 GitHub）
 │   ├── repo-list.tsx         # 服务端：卡片列表（含排名）
 │   └── states.tsx            # EmptyState / ErrorState
 ├── lib/
@@ -170,11 +170,7 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 
 **收起态**：排名序号 · 仓库全名（owner 灰色小字 + name 加粗）· 描述（空则显示占位文案"暂无描述"，最多 2 行截断）· 底部元信息行：语言色点+语言名、★ stars（缩写如 36.7k）、forks、绿色「本周 +665」随 `since` 变化文案、贡献者头像堆叠（≤5）。
 
-**展开态（点击卡片任意处切换）**：
-
-- 完整描述（不截断）；
-- 贡献者列表：头像 + 用户名（链到 GitHub 个人页）；
-- 操作区：「在 GitHub 打开」主按钮、「查看 Issues」次按钮、复制 `git clone` 命令（点击后按钮文案短暂变为「已复制」）。
+**交互**：整卡为直达链接，点击新标签页打开对应 GitHub 仓库（target=_blank + noopener）。无展开面板——贡献者以头像堆叠呈现在元信息行，克隆等操作由用户在 GitHub 页完成（2026-09-24 用户确认移除展开功能）。
 
 ### 7.3 状态设计
 
@@ -190,7 +186,7 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 ## 8. 样式与主题
 
 - **视觉基调**：GitHub 风格 —— 亮色为主，跟随系统深色模式（`media` 策略的 `dark:` 变体，不引入主题切换按钮，不做本地存储）。
-- 卡片：圆角、1px 边框、hover 轻微阴影/背景加深；展开区用左边框或背景色差与收起态区分。
+- 卡片：圆角、1px 边框、hover 阴影/边框微反馈（150–200ms ease-out，motion-reduce 退化）；整卡直链 GitHub，无展开区。
 - 语言色点：内置 30+ 常见语言的 GitHub 官方色（TypeScript 蓝、Python 黄绿…），未知语言统一中性灰。
 - 响应式：移动端（<768px）单列；≥768px 仓库列表为两列网格，容器最大宽度 `max-w-5xl` 居中（2026-09-24 用户确认由单列改为两列）。头像堆叠在窄屏自动隐藏至 3 个。
 
@@ -226,7 +222,7 @@ images: { remotePatterns: [{ protocol: "https", hostname: "avatars.githubusercon
 | M1 脚手架 | `pnpm dlx create-next-app@14`（TS + Tailwind + App Router）、清理模板、layout/全局样式、目录骨架、`pnpm dev` 本地跑通 | 可运行的空壳页 |
 | M2 数据层 | `lib/trending.ts`（fetch+类型+解析+超时）、`/lang` 接入、`page.tsx` 直出 25 条无样式列表 | 数据打通 |
 | M3 列表与筛选 | RepoCard 收起态、RepoList、FilterBar（URL 驱动）、loading/error/empty 三态 | 核心功能可用 |
-| M4 展开与打磨 | 卡片展开区、复制 clone、头像堆叠、深色模式、语言色点、数字缩写 | 视觉与交互完整 |
+| M4 直链与打磨 | 卡片直链 GitHub、头像堆叠、深色模式、语言色点、数字缩写 | 视觉与交互完整 |
 | M5 部署验收 | Vercel 上线、线上回归（移动端+桌面端+双主题）、README 更新 | 可交付 |
 
 预估 M1–M5 合计一次会话内可完成。
@@ -235,7 +231,7 @@ images: { remotePatterns: [{ protocol: "https", hostname: "avatars.githubusercon
 
 - [ ] 首屏展示 daily Top 25，含排名、名称、描述、语言、stars/forks、周期增量、贡献者头像。
 - [ ] 语言 + 周期筛选生效，URL 随之变化，直接打开带参数链接能还原筛选结果。
-- [ ] 点击卡片可展开/收起，展开区含完整描述、贡献者链接、GitHub 外链与复制 clone。
+- [ ] 点击整卡在新标签页打开对应 GitHub 仓库（target=_blank + noopener），贡献者以头像堆叠呈现在卡片上。
 - [ ] 筛选切换出现骨架屏；接口异常出现错误页并可重试；空结果有空态文案。
 - [ ] 移动端（375px）与桌面端（1280px）布局正常，深色模式正常。
 - [ ] `pnpm build` 无错误无类型错误；Vercel 线上可访问。
@@ -252,6 +248,6 @@ images: { remotePatterns: [{ protocol: "https", hostname: "avatars.githubusercon
 
 1. **语言**：使用 TypeScript。
 2. **主题**：亮色为主 + 跟随系统深色（`dark:` 变体），不做手动切换按钮。
-3. **展开行为**：多卡可同时展开，非手风琴。
+3. **卡片行为**：整卡直链 GitHub——2026-09-24 用户确认移除展开功能，原「多卡可同时展开」决策作废。
 4. **热门开发者 Tab**（API `/user` 端点）：本期不做，列为二期可选项。
 5. **包管理器**：pnpm——脚手架与日常命令一律用 pnpm（`pnpm dlx create-next-app`、`pnpm dev`、`pnpm build`、`pnpm lint`），不使用 npm/yarn。

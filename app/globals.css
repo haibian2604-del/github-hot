@@ -12,22 +12,6 @@ body {
     "PingFang SC", "Microsoft YaHei", sans-serif;
 }
 
-/*
- * 卡片展开动画 keyframes。
- * 全局样式表只此一份：原先内联在每张展开的 RepoCard 里，会随列表重复注入。
- * 使用处：components/repo-card.tsx 的 motion-safe:animate-[repo-card-expand_180ms_ease-out]。
- */
-@keyframes repo-card-expand {
-  from {
-    grid-template-rows: 0fr;
-    opacity: 0.5;
-  }
-  to {
-    grid-template-rows: 1fr;
-    opacity: 1;
-  }
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;

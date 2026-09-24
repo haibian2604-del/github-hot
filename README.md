@@ -6,7 +6,7 @@ Trending GitHub repositories tracker.
 
 - 数据来源：[doforce/github-trending](https://github.com/doforce/github-trending) 公共 API（服务端获取）
 - 筛选：编程语言 + 周期（今天/本周/本月），状态写入 URL，可直接分享
-- 卡片可展开：贡献者、GitHub 外链、复制 clone 命令
+- 卡片整卡直链 GitHub 仓库页（新标签页打开）
 
 ## 开发
 

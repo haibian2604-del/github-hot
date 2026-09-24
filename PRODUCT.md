@@ -12,11 +12,11 @@ web
 
 ## Product Purpose
 
-GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言筛选浏览 GitHub 热门仓库，支持卡片展开查看详情。成功 = 30 秒内看清今天有什么值得关注的新项目/新趋势。
+GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言筛选浏览 GitHub 热门仓库，点击卡片直达对应 GitHub 仓库页。成功 = 30 秒内看清今天有什么值得关注的新项目/新趋势。
 
 ## Positioning
 
-个人学习浏览工具。机制：聚合 doforce/github-trending 公共 API（服务端获取、URL 驱动筛选、筛选状态可分享），加上「展开式详情」——这是 GitHub 官方 trending 页不具备的组合。
+个人学习浏览工具。机制：聚合 doforce/github-trending 公共 API（服务端获取、URL 驱动筛选、筛选状态可分享），加上「热门语言白名单 + 筛选状态可分享的 URL」——这是 GitHub 官方 trending 页不具备的组合。
 
 ## Operating Context
 
@@ -50,6 +50,6 @@ GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言�
 
 ## Accessibility & Inclusion
 
-- 展开/收起用 `aria-expanded`；筛选区有 `aria-busy`/`aria-label`；外链 `rel="noopener noreferrer"`。
+- 整卡为直达 GitHub 仓库页的链接（`target="_blank"` + `rel="noopener noreferrer"`）；筛选区有 `aria-busy`/`aria-label`。
 - 中文界面，`lang="zh-CN"`；控件用原生元素，键盘天然可达。
 - 动效尊重 `prefers-reduced-motion`。

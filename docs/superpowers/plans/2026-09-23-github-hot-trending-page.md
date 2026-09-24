@@ -2,9 +2,9 @@
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
-**Goal:** 构建一个 GitHub Trending 浏览页：URL 驱动的语言/周期筛选 + 可展开的仓库卡片，数据来自 doforce trending API，部署到 Vercel。
+**Goal:** 构建一个 GitHub Trending 浏览页：URL 驱动的语言/周期筛选 + 整卡直链 GitHub 的仓库卡片，数据来自 doforce trending API，部署到 Vercel。
 
-**Architecture:** Server Component 内用原生 fetch 调用上游 API（该 API 无 CORS 头，必须服务端请求），筛选状态写入 URL searchParams 由服务端重渲染，卡片展开为纯客户端 useState。数据经 `lib/trending.ts` 单点归一化，组件不感知上游原始 JSON。
+**Architecture:** Server Component 内用原生 fetch 调用上游 API（该 API 无 CORS 头，必须服务端请求），筛选状态写入 URL searchParams 由服务端重渲染，RepoCard 为服务端组件、整卡直链 GitHub。数据经 `lib/trending.ts` 单点归一化，组件不感知上游原始 JSON。
 
 **Tech Stack:** Next.js 14.2.x (App Router) · React 18.3 · TypeScript · Tailwind CSS 3.4 · 原生 fetch · Vitest + Testing Library（仅 devDependencies）· pnpm
 
@@ -20,7 +20,7 @@
 - 主题：亮色为主，`dark:` 变体跟随系统（Tailwind 3.4 默认 `darkMode: "media"`，无需配置），不做手动切换按钮。
 - 外链一律 `target="_blank" rel="noopener noreferrer"`。
 - 语言筛选参数必须校验：为空 或 存在于 `/lang` 返回的 key 集合，非法值回落「全部语言」。
-- 展开行为：多卡可同时展开（非手风琴）。
+- 卡片行为：整卡直链 GitHub（2026-09-24 用户确认移除展开功能）。
 - 本期不做：热门开发者 Tab、手动主题切换、分页、登录/收藏。
 
 ---
@@ -915,7 +915,7 @@ git commit -m "feat: add url-driven filter bar"
 
 ---
 
-### Task 8: RepoCard —— 可展开仓库卡片（客户端组件，TDD）
+### Task 8: RepoCard —— 单张卡片，整卡直链 GitHub（服务端组件，TDD）
 
 **Files:**
 - Create: `components/repo-card.tsx`
@@ -923,7 +923,7 @@ git commit -m "feat: add url-driven filter bar"
 
 **Interfaces:**
 - Consumes: `TrendingRepo`（Task 5）、`formatCompactNumber` / `changeLabel`（Task 3）、`getLanguageColor`（Task 4）。
-- Produces: `default export RepoCard({ repo, rank, since }: { repo: TrendingRepo; rank: number; since: Since })`——点击整卡切换展开（`aria-expanded`），可多卡同时展开；展开区含完整描述、贡献者（头像+用户名外链）、「在 GitHub 打开」「查看 Issues」、复制 clone 按钮（点击后 1.5s 显示「已复制 ✓」）。
+- Produces: `default export RepoCard({ repo, rank, since }: { repo: TrendingRepo; rank: number; since: Since })`——整卡为 `<a>` 直链 `repo.repoUrl`（`target="_blank"` + `rel="noopener noreferrer"`），可访问名含卡内全部文本；无展开面板，贡献者以头像堆叠呈现在元信息行（2026-09-24 用户确认移除展开功能）。
 
 - [ ] **Step 1: 写失败测试 `components/__tests__/repo-card.test.tsx`**
 
@@ -1407,7 +1407,7 @@ Expected: 测试全部 PASS；构建成功。
 pnpm dev
 ```
 
-浏览器检查：`http://localhost:3000`（25 张卡片、筛选切换 URL 变化、展开/收起、复制按钮）、`/?lang=python&since=weekly`（正确筛选）、`/?lang=notalang`（回落全部）、空态与骨架屏可见。检查完毕 Ctrl-C。
+浏览器检查：`http://localhost:3000`（25 张卡片、筛选切换 URL 变化、整卡新标签页直链 GitHub）、`/?lang=python&since=weekly`（正确筛选）、`/?lang=notalang`（回落全部）、空态与骨架屏可见。检查完毕 Ctrl-C。
 
 - [ ] **Step 10: Commit**
 
@@ -1495,7 +1495,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 pnpm test && pnpm build && pnpm dev
 ```
 
-Expected: 测试 PASS、构建成功；浏览器确认亮/暗两套观感正常（系统切换深色模式验证）、移动端 375px 宽度布局正常（头像堆叠不溢出）、筛选与展开交互不回归。
+Expected: 测试 PASS、构建成功；浏览器确认亮/暗两套观感正常（系统切换深色模式验证）、移动端 375px 宽度布局正常（头像堆叠不溢出）、筛选与整卡直链不回归。
 
 - [ ] **Step 4: 更新 `README.md`**
 
@@ -1508,7 +1508,7 @@ Trending GitHub repositories tracker.
 
 - 数据来源：[doforce/github-trending](https://github.com/doforce/github-trending) 公共 API（服务端获取）
 - 筛选：编程语言 + 周期（今天/本周/本月），状态写入 URL，可直接分享
-- 卡片可展开：贡献者、GitHub 外链、复制 clone 命令
+- 卡片整卡直链 GitHub 仓库页
 
 ## 开发
 
@@ -1565,7 +1565,7 @@ git push origin main
 
 - [ ] **Step 4: 线上验收（对照 development-plan.md §12 清单）**
 
-浏览器逐项验证：daily Top 25 渲染；`/?lang=python&since=weekly` 可分享还原；展开/收起与复制 clone；骨架屏（切换筛选时）、错误态（可临时改 `lib/trending.ts` 的 API_BASE 为无效地址验证 error.tsx，验完改回并重新部署）、空态；375px 与 1280px 两档宽度；系统深色模式。全过即交付。
+浏览器逐项验证：daily Top 25 渲染；`/?lang=python&since=weekly` 可分享还原；整卡直链新标签页打开；骨架屏（切换筛选时）、错误态（可临时改 `lib/trending.ts` 的 API_BASE 为无效地址验证 error.tsx，验完改回并重新部署）、空态；375px 与 1280px 两档宽度；系统深色模式。全过即交付。
 
 - [ ] **Step 5: 收尾 Commit（如验收中有修补）**
 
