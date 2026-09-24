@@ -8,14 +8,12 @@ import { CardSkeleton } from "@/components/skeletons";
 import { EmptyState } from "@/components/states";
 import { buildFilterPath, parseFilters, type FilterState } from "@/lib/filter";
 import { changeLabel } from "@/lib/format";
-import type { LanguageOption, TrendingRepo } from "@/lib/trending";
+import { SINCE_VALUES, type LanguageOption, type TrendingRepo } from "@/lib/trending";
 
 // 挂载/切换语言后延迟多久开始静默预热其余时间周期。
 // 取值需大于一次快速交互（用户刚进页面就开始点也不至于与点击路径竞争），
 // 又要小到在用户第一次点 本周/本月 之前必然完成 —— 1.5s 是两者的平衡点。
 const IDLE_PREFETCH_DELAY_MS = 1500;
-
-const PERIODS = ["daily", "weekly", "monthly"] as const;
 
 function cacheKey(f: FilterState): string {
   return `${f.lang}|${f.since}`;
@@ -137,7 +135,7 @@ export default function RepoBrowser({
   useEffect(() => {
     const timer = setTimeout(() => {
       const current = filtersRef.current;
-      for (const since of PERIODS) {
+      for (const since of SINCE_VALUES) {
         if (since === current.since) continue;
         const key = cacheKey({ lang: current.lang, since });
         if (cacheRef.current?.has(key)) continue;

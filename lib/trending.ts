@@ -4,7 +4,7 @@ const TRENDING_REVALIDATE_S = 3600;
 const LANGUAGES_REVALIDATE_S = 86_400;
 
 export type Since = "daily" | "weekly" | "monthly";
-const SINCE_VALUES: Since[] = ["daily", "weekly", "monthly"];
+export const SINCE_VALUES: Since[] = ["daily", "weekly", "monthly"];
 export const DEFAULT_SINCE: Since = "daily";
 
 export interface Contributor {

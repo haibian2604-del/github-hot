@@ -4,11 +4,12 @@ import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 import { SINCE_LABELS } from "@/lib/format";
 import { buildFilterPath, type FilterState } from "@/lib/filter";
-import type { LanguageOption, Since } from "@/lib/trending";
+import { SINCE_VALUES, type LanguageOption, type Since } from "@/lib/trending";
 
-const SINCE_TABS: { value: Since; label: string }[] = (
-  ["daily", "weekly", "monthly"] as const
-).map((value) => ({ value, label: SINCE_LABELS[value] }));
+const SINCE_TABS: { value: Since; label: string }[] = SINCE_VALUES.map((value) => ({
+  value,
+  label: SINCE_LABELS[value],
+}));
 
 export default function FilterBar({
   languages,
