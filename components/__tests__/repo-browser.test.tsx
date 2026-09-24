@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RepoBrowser from "@/components/repo-browser";
@@ -124,5 +124,84 @@ describe("RepoBrowser", () => {
     await waitFor(() =>
       expect(screen.getByRole("link", { name: "查看全部语言热门" })).toBeInTheDocument()
     );
+  });
+});
+
+describe("RepoBrowser idle prefetch and pending skeleton", () => {
+  let pushStateSpy: ReturnType<typeof vi.spyOn>;
+
+  // RTL 16 的 asyncWrapper 在返回前会安排一个 setTimeout(0) 排水微任务，但只有检测到
+  // jest 全局（faked setTimeout 上的 clock 属性 vitest 同样会挂）才会自行 advance。
+  // vitest 不定义 jest 全局 → 不 advance → await user.click 永久挂起。
+  // 给它补一个最小 jest 兼容垫片（vi.advanceTimersByTime 与 jest 签名一致），
+  // 仅本 describe 生效；shouldAdvanceTime 保持关闭，预热阈值仍是确定性推进。
+  beforeAll(() => {
+    (globalThis as { jest?: unknown }).jest = { advanceTimersByTime: vi.advanceTimersByTime };
+  });
+
+  afterAll(() => {
+    delete (globalThis as { jest?: unknown }).jest;
+  });
+
+  beforeEach(() => {
+    push.mockReset();
+    mockFetch.mockReset();
+    pushStateSpy = vi.spyOn(window.history, "pushState");
+  });
+
+  afterEach(() => {
+    vi.useRealTimers();
+    pushStateSpy.mockRestore();
+    window.history.replaceState(null, "", "/");
+  });
+
+  it("idle-prefetches the other periods once, cache-write only, so first click needs zero fetches", async () => {
+    vi.useFakeTimers();
+    const user = userEvent.setup({ advanceTimers: vi.advanceTimersByTime });
+    mockFetch
+      .mockResolvedValueOnce(okResponse([repo("weekly-repo")]))
+      .mockResolvedValueOnce(okResponse([repo("monthly-repo")]));
+    setup({ lang: "", since: "daily" }, [repo("daily-repo")]);
+
+    expect(mockFetch).not.toHaveBeenCalled();
+
+    // 越过空闲预热阈值：weekly 与 monthly 各静默预取一次（daily 已播种，跳过）
+    act(() => {
+      vi.advanceTimersByTime(1600);
+    });
+    await act(async () => {}); // 冲刷预取响应的微任务
+
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(mockFetch).toHaveBeenCalledWith("/api/trending?since=weekly");
+    expect(mockFetch).toHaveBeenCalledWith("/api/trending?since=monthly");
+    expect(mockFetch).not.toHaveBeenCalledWith("/api/trending?since=daily");
+    // 预热只写缓存：不切列表、不碰 URL
+    expect(screen.getByText("daily-repo")).toBeInTheDocument();
+    expect(screen.queryByText("weekly-repo")).not.toBeInTheDocument();
+    expect(pushStateSpy).not.toHaveBeenCalled();
+
+    // 首次点击 本周：纯缓存命中，零额外请求
+    await user.click(screen.getByRole("button", { name: "本周" }));
+    expect(mockFetch).toHaveBeenCalledTimes(2);
+    expect(screen.getByText("weekly-repo")).toBeInTheDocument();
+    expect(pushStateSpy).toHaveBeenCalledWith(null, "", buildFilterPath({ lang: "", since: "weekly" }));
+  });
+
+  it("shows card skeletons while a pending miss fetch is in flight, then the new list", async () => {
+    const user = userEvent.setup();
+    setup({ lang: "", since: "daily" }, [repo("daily-repo")]);
+    // miss 到 weekly，保持在途不 resolve（与竞态测试相同的可控 promise 模式）
+    let resolveMiss: (v: unknown) => void = () => {};
+    mockFetch.mockReturnValueOnce(new Promise((resolve) => { resolveMiss = resolve; }));
+
+    await user.click(screen.getByRole("button", { name: "本周" }));
+
+    // pending 期间：两列骨架屏替代旧列表
+    expect(screen.getAllByTestId("card-skeleton")).toHaveLength(6);
+    expect(screen.queryByText("daily-repo")).not.toBeInTheDocument();
+
+    resolveMiss(okResponse([repo("weekly-repo")]));
+    await waitFor(() => expect(screen.getByText("weekly-repo")).toBeInTheDocument());
+    expect(screen.queryByTestId("card-skeleton")).not.toBeInTheDocument();
   });
 });
