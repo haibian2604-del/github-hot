@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import RepoBrowser from "@/components/repo-browser";
 import { buildFilterPath } from "@/lib/filter";
@@ -96,6 +96,24 @@ describe("RepoBrowser", () => {
     mockFetch.mockRejectedValueOnce(new Error("proxy down"));
     await user.click(screen.getByRole("button", { name: "本周" }));
     await waitFor(() => expect(push).toHaveBeenCalledWith(buildFilterPath({ lang: "", since: "weekly" })));
+  });
+
+  it("keeps the cache-hit selection when an in-flight miss resolves late", async () => {
+    const user = userEvent.setup();
+    setup({ lang: "", since: "daily" }, [repo("daily-repo")]);
+    // miss 到 weekly，保持在途不 resolve
+    let resolveMiss: (v: unknown) => void = () => {};
+    mockFetch.mockReturnValueOnce(new Promise((resolve) => { resolveMiss = resolve; }));
+    await user.click(screen.getByRole("button", { name: "本周" }));
+    // pending 期间点击缓存命中的键：界面立即切回 daily
+    await user.click(screen.getByRole("button", { name: "今天" }));
+    expect(screen.getByText("daily-repo")).toBeInTheDocument();
+    // 迟到的 weekly 响应返回：不得把界面或 URL 拉回 weekly
+    resolveMiss(okResponse([repo("weekly-repo")]));
+    await act(async () => {});
+    expect(screen.queryByText("weekly-repo")).not.toBeInTheDocument();
+    expect(screen.getByText("daily-repo")).toBeInTheDocument();
+    expect(window.location.search).toBe("?since=daily");
   });
 
   it("renders EmptyState when the proxy returns an empty list", async () => {

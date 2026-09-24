@@ -53,10 +53,19 @@ export default function RepoBrowser({
   const handleFilterChange = useCallback(
     (next: FilterState) => {
       const nextKey = cacheKey(next);
-      if (nextKey === currentKeyRef.current) return;
+      if (nextKey === currentKeyRef.current) {
+        // 同键重复选择同样是一次「用户施加的选择」：使在途请求失效并结束加载态，
+        // 否则迟到的 miss 响应会把界面拉回用户已离开的筛选
+        seqRef.current += 1;
+        setPending(false);
+        return;
+      }
 
       const cached = cacheRef.current?.get(nextKey);
       if (cached) {
+        // 缓存命中同样使在途 miss 请求失效（与 miss 分支共用 seqRef 序号）
+        seqRef.current += 1;
+        setPending(false);
         currentKeyRef.current = nextKey;
         setRepos(cached);
         setFilters(next);
@@ -109,9 +118,10 @@ export default function RepoBrowser({
       seenUrlKeyRef.current = urlKey;
       return;
     }
-    // 只响应 useSearchParams 的真实变化：本组件自己的 window.history.pushState 是
-    // shallow routing，不会更新 useSearchParams，因此「派生键变化」只会来自
-    // 浏览器后退/前进（App Router 会随之更新 searchParams 并重渲染）。
+    // 只响应 useSearchParams 派生键的变化。注意：本组件自己的 window.history.pushState
+    // 在 Next 14.1+ 同样会让 searchParams 同步并触发本 effect —— 但那时派生键与当前键
+    // 相同，handleFilterChange 的同键守卫使这次水合成为 no-op。
+    // 不要因为「看似多余」而移除该守卫：它同时挡住 self-push 回环与迟到的在途响应。
     if (urlKey === seenUrlKeyRef.current) return;
     seenUrlKeyRef.current = urlKey;
     applyRef.current(filtersFromParams(searchParams));
@@ -130,7 +140,7 @@ export default function RepoBrowser({
       <div
         aria-busy={pending}
         className={`mt-4 transition-opacity duration-200 ease-out motion-reduce:transition-none ${
-          pending ? "opacity-60" : "opacity-100"
+          pending ? "opacity-50" : "opacity-100"
         }`}
       >
         {repos.length === 0 ? (
