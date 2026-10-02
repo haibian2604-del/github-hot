@@ -185,7 +185,7 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 
 ## 8. 样式与主题
 
-- **视觉基调**：铅字榜单（typographic ledger，2026-09-24 用户要求重设计，摆脱 GitHub 克隆观感）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；跟随系统深色模式（`media` 策略的 `dark:` 变体，不引入主题切换按钮，不做本地存储）。
+- **视觉基调**：铅字榜单（typographic ledger，2026-09-24 用户要求重设计，摆脱 GitHub 克隆观感）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；亮/暗主题经 `darkMode: ["class"]` 闸门，默认跟随系统（`prefers-color-scheme`），header 右缘提供手动切换按钮，手动选择以 localStorage 持久化并覆盖系统偏好（2026-09-24 用户要求，推翻原「不做手动主题切换按钮」决策）；layout 内联脚本首帧前同步主题防闪烁。
 - 榜单行：无卡片框，行间 hairline（`border-line`）分隔；hover 面色微反馈（150ms ease-out，motion-reduce 退化）；整行直链 GitHub，无展开区。
 - 语言色点：内置 30+ 常见语言的 GitHub 官方色（TypeScript 蓝、Python 黄绿…），未知语言统一中性灰。
 - 响应式：移动端（<768px）单列；≥768px 仓库列表为两列网格，容器最大宽度 `max-w-5xl` 居中（2026-09-24 用户确认由单列改为两列）。头像堆叠在窄屏自动隐藏至 3 个。
@@ -247,7 +247,7 @@ images: { remotePatterns: [{ protocol: "https", hostname: "avatars.githubusercon
 ## 14. 已确认决策（2026-09-23）
 
 1. **语言**：使用 TypeScript。
-2. **主题**：亮色为主 + 跟随系统深色（`dark:` 变体），不做手动切换按钮。
+2. **主题**：亮色为主 + 默认跟随系统深色（`dark:` 变体，`class` 闸门）；手动亮/暗切换按钮（header 右缘），手动选择以 localStorage 持久化（2026-09-24 用户要求，推翻原「不做手动切换按钮」决策）。
 3. **卡片行为**：整卡直链 GitHub——2026-09-24 用户确认移除展开功能，原「多卡可同时展开」决策作废。
 4. **热门开发者 Tab**（API `/user` 端点）：本期不做，列为二期可选项。
 5. **包管理器**：pnpm——脚手架与日常命令一律用 pnpm（`pnpm dlx create-next-app`、`pnpm dev`、`pnpm build`、`pnpm lint`），不使用 npm/yarn。

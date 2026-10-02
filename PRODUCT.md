@@ -26,14 +26,14 @@ GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言�
 
 - 数据源：`https://trend.doforce.dpdns.org`（`/repo`、`/lang`）；无 CORS 头 → 必须服务端请求；出错仍返回 200+`[]`；单次最多 25 条（实测某日仅 17 条，不得假定满额）。
 - 技术约束：Next.js 14.2 (App Router) + React 18 + Tailwind 3.4 + TypeScript + 原生 fetch + pnpm；运行时零额外依赖（规格 docs/development-plan.md §2）。
-- 明确不做：登录、收藏、搜索、热门开发者 Tab、分页、手动主题切换、商业化。
+- 明确不做：登录、收藏、搜索、热门开发者 Tab、分页、商业化。
 - 客户端切换缓存：/api/trending 同源代理 + 会话内存缓存，回切已看过的筛选组合零延迟（2026-09-24 用户确认）。
 - 语言筛选：仅展示热门语言白名单（30 项策展清单，与语言色点同源）；URL 中出现非白名单语言自动回落全部（2026-09-24 用户确认）。
 
 ## Brand Commitments
 
 - 站名「GitHub Hot」；页面需署名数据来源 doforce/github-trending。
-- 视觉语言：铅字榜单（typographic ledger）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；语言色点保留 GitHub 官方色（2026-09-24 用户要求重设计：摆脱 GitHub 克隆观感，建立独立榜单身份）。
+- 视觉语言：铅字榜单（typographic ledger）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；语言色点保留 GitHub 官方色（2026-09-24 用户要求重设计：摆脱 GitHub 克隆观感，建立独立榜单身份）。手动亮/暗切换：默认跟随系统，手动选择持久化（2026-09-24 用户要求，推翻原"不做切换按钮"决策）。
 - 语言筛选器：原生 `<select>`（用户确认）；榜单行密度：舒适阅读型；≥768px 两列网格布局（用户确认，2026-09-24）。
 
 ## Evidence on Hand
