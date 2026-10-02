@@ -38,13 +38,14 @@ export default function FilterBar({
   const busy = pending || transitionPending;
 
   return (
+    // 浮动胶囊：吸顶容器与胶囊合一（根元素需承载 aria-busy 契约），sticky top-0 直接贴顶，无全宽横带
     <div
-      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-line bg-canvas/95 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-line-dark dark:bg-canvas-dark/95 ${
+      className={`mx-auto mt-3 flex max-w-5xl flex-col gap-3 rounded-2xl border border-line/70 bg-white/90 py-2 pl-5 pr-2 shadow-[0_10px_30px_-15px_rgba(24,24,27,0.25)] backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between sm:rounded-full dark:border-line-dark/60 dark:bg-surface-dark/90 dark:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.6)] ${
         busy ? "opacity-50" : "opacity-100"
       }`}
       aria-busy={busy}
     >
-      <div role="group" aria-label="时间周期" className="flex items-end gap-5 self-start">
+      <div role="group" aria-label="时间周期" className="flex items-center gap-1 self-start">
         {SINCE_TABS.map(({ value, label }) => (
           <button
             key={value}
@@ -52,9 +53,9 @@ export default function FilterBar({
             data-active={filters.since === value}
             aria-pressed={filters.since === value}
             onClick={() => apply({ ...filters, since: value })}
-            className={`relative px-2 pb-2 pt-1 text-sm transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent-dark ${
+            className={`rounded-full px-3 py-1.5 text-sm transition-colors duration-150 ease-out hover:bg-zinc-100/70 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:hover:bg-white/5 dark:focus-visible:ring-accent-dark ${
               filters.since === value
-                ? "font-medium text-ink after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-accent after:content-[''] dark:text-ink-dark dark:after:bg-accent-dark"
+                ? "font-semibold text-accent dark:text-accent-dark"
                 : "text-zinc-500 hover:text-ink dark:text-zinc-400 dark:hover:text-ink-dark"
             }`}
           >
@@ -63,13 +64,13 @@ export default function FilterBar({
         ))}
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-zinc-500 dark:text-zinc-400">
-        语言
+      <label className="flex items-center gap-1 self-start sm:self-auto">
+        <span className="text-xs text-zinc-400 dark:text-zinc-500">语言</span>
         <span className="relative inline-flex">
           <select
             value={filters.lang}
             onChange={(e) => apply({ ...filters, lang: e.target.value })}
-            className="appearance-none rounded-lg border border-line bg-surface py-1.5 pl-2.5 pr-8 text-sm text-ink transition-colors duration-150 ease-out hover:border-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none dark:border-line-dark dark:bg-surface-dark dark:text-ink-dark dark:hover:border-zinc-500 dark:focus-visible:ring-accent-dark"
+            className="appearance-none rounded-full bg-transparent py-1.5 pl-2 pr-8 text-sm text-ink transition-colors duration-150 ease-out hover:bg-zinc-100/70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none dark:text-ink-dark dark:hover:bg-white/5 dark:focus-visible:ring-accent-dark"
           >
             <option value="">全部语言</option>
             {languages.map((l) => (
@@ -86,7 +87,7 @@ export default function FilterBar({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500 dark:text-zinc-400"
+            className="pointer-events-none absolute right-2 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500 dark:text-zinc-400"
           >
             <path d="m4 6 4 4 4-4" />
           </svg>
