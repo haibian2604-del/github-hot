@@ -1,10 +1,11 @@
 import { CardSkeleton } from "@/components/skeletons";
 
-// 与 FilterBar 同构：白色浮动胶囊（rounded-2xl，sm 起全胶囊），左侧周期 tab 短块，右侧语言 select 块
+// 与 FilterBar 同构：移动端两行 / sm 起单行的浮动胶囊。玻璃效果不在骨架中呈现，保留近似底色/边框/阴影；
+// 圆角对齐 GlassSurface borderRadius=999 的实际钳制（移动端两行胶囊高 100px → 50px，sm 单行 56px → 全胶囊）。
 function FilterBarSkeleton() {
   return (
-    <div className="mx-auto mt-3 flex max-w-5xl flex-col gap-3 rounded-2xl border border-line/70 bg-white/90 py-2 pl-5 pr-2 shadow-[0_10px_30px_-15px_rgba(24,24,27,0.25)] sm:flex-row sm:items-center sm:justify-between sm:rounded-full dark:border-line-dark/60 dark:bg-surface-dark/90 dark:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.6)]">
-      <div className="flex items-center gap-1">
+    <div className="mx-auto mt-3 flex max-w-5xl flex-col gap-3 rounded-[50px] border border-line/70 bg-white/90 px-5 py-3 shadow-[0_10px_30px_-15px_rgba(24,24,27,0.25)] sm:flex-row sm:items-center sm:justify-between sm:rounded-full dark:border-line-dark/60 dark:bg-surface-dark/90 dark:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.6)]">
+      <div className="flex items-center gap-1 self-start">
         <div className="h-8 w-14 animate-pulse rounded-full bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
         <div className="h-8 w-14 animate-pulse rounded-full bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
         <div className="h-8 w-14 animate-pulse rounded-full bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
