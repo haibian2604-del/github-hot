@@ -41,9 +41,9 @@ export default function RepoCard({
   since: Since;
 }) {
   return (
-    // 榜单行：发丝线分隔替代卡片框。两列网格下首行含第 1、2 名，md 补一条
-    // nth-child(-n+2) 让右列首行同样免掉顶部孤立的 hairline。
-    <li className="h-full border-t border-line first:border-t-0 md:[&:nth-child(-n+2)]:border-t-0 dark:border-line-dark">
+    // 榜单行：发丝线分隔替代卡片框。首行免顶部孤立 hairline 的 nth-child 前缀
+    // 必须与 RepoList 在各断点的列数（1/2/3/4）同步：md 前 1 项、md 2 项、xl 3 项、2xl 4 项。
+    <li className="h-full border-t border-line first:border-t-0 md:[&:nth-child(-n+2)]:border-t-0 xl:[&:nth-child(-n+3)]:border-t-0 2xl:[&:nth-child(-n+4)]:border-t-0 dark:border-line-dark">
       <a
         href={repo.repoUrl}
         target="_blank"

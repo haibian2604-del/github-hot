@@ -188,7 +188,7 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 - **视觉基调**：铅字榜单（typographic ledger，2026-09-24 用户要求重设计，摆脱 GitHub 克隆观感）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；亮/暗主题经 `darkMode: ["class"]` 闸门，默认跟随系统（`prefers-color-scheme`），header 右缘提供手动切换按钮，手动选择以 localStorage 持久化并覆盖系统偏好（2026-09-24 用户要求，推翻原「不做手动主题切换按钮」决策）；layout 内联脚本首帧前同步主题防闪烁。
 - 榜单行：无卡片框，行间 hairline（`border-line`）分隔；hover 面色微反馈（150ms ease-out，motion-reduce 退化）；整行直链 GitHub，无展开区。
 - 语言色点：内置 30+ 常见语言的 GitHub 官方色（TypeScript 蓝、Python 黄绿…），未知语言统一中性灰。
-- 响应式：移动端（<768px）单列；≥768px 仓库列表为两列网格，容器最大宽度 `max-w-5xl` 居中（2026-09-24 用户确认由单列改为两列）。头像堆叠在窄屏自动隐藏至 3 个。
+- 响应式：移动端（<768px）单列；≥768px 弹性列网格（md 两列 / xl 三列 / 2xl 四列），容器最大宽度 `max-w-screen-2xl` 居中（2026-09-24 用户确认由单列改为两列；2026-10-02 用户确认为弹性列数，宽屏不再固定两列）。头像堆叠在窄屏自动隐藏至 3 个。
 
 ---
 

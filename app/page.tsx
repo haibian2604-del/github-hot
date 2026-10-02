@@ -18,7 +18,7 @@ export default async function HomePage({
   const repos = await fetchTrending({ lang, since: filters.since });
 
   return (
-    <main className="mx-auto max-w-5xl px-4 pb-12">
+    <main className="mx-auto max-w-screen-2xl px-4 pb-12">
       <RepoBrowser initialFilters={{ ...filters, lang }} initialRepos={repos} languages={languages} />
     </main>
   );

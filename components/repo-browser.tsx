@@ -193,7 +193,7 @@ export default function RepoBrowser({
       {/* pending 期间以骨架屏替代旧列表（替代原先的半透明冻结感）；FilterBar 始终可交互 */}
       <div aria-busy={pending} className="mt-4">
         {pending ? (
-          <ul aria-hidden="true" className="grid grid-cols-1 gap-x-8 gap-y-0 md:grid-cols-2">
+          <ul aria-hidden="true" className="grid grid-cols-1 gap-x-8 gap-y-0 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
             {Array.from({ length: 6 }).map((_, i) => (
               <CardSkeleton key={i} />
             ))}

@@ -4,7 +4,8 @@ export function CardSkeleton() {
   return (
     <li
       data-testid="card-skeleton"
-      className="border-t border-line py-4 first:border-t-0 md:[&:nth-child(-n+2)]:border-t-0 dark:border-line-dark"
+      // nth-child 前缀与 RepoCard/RepoList 各断点列数（1/2/3/4）同步
+      className="border-t border-line py-4 first:border-t-0 md:[&:nth-child(-n+2)]:border-t-0 xl:[&:nth-child(-n+3)]:border-t-0 2xl:[&:nth-child(-n+4)]:border-t-0 dark:border-line-dark"
     >
       {/* 与 RepoCard 榜单行同构：排名块 / 身份行 / 两行描述 / 元信息行 */}
       <div className="flex items-start gap-3">

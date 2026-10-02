@@ -34,7 +34,7 @@ GitHub Trending 浏览页：按周期（今天/本周/本月）与编程语言�
 
 - 站名「GitHub Hot」；页面需署名数据来源 doforce/github-trending。
 - 视觉语言：铅字榜单（typographic ledger）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；语言色点保留 GitHub 官方色（2026-09-24 用户要求重设计：摆脱 GitHub 克隆观感，建立独立榜单身份）。手动亮/暗切换：默认跟随系统，手动选择持久化（2026-09-24 用户要求，推翻原"不做切换按钮"决策）。导航栏：React Bits GlassSurface 液态玻璃（class 闸门适配版）。
-- 语言筛选器：原生 `<select>`（用户确认）；榜单行密度：舒适阅读型；≥768px 两列网格布局（用户确认，2026-09-24）。
+- 语言筛选器：原生 `<select>`（用户确认）；榜单行密度：舒适阅读型；≥768px 弹性列网格（md 2 列 / xl 3 列 / 2xl 4 列），内容轨 `max-w-screen-2xl`（2026-09-24 用户确认两列；2026-10-02 用户确认改为弹性列数）。
 
 ## Evidence on Hand
 

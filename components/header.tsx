@@ -3,7 +3,7 @@ import ThemeToggle from "@/components/theme-toggle";
 export default function SiteHeader() {
   return (
     <header className="border-b border-line bg-white dark:border-line-dark dark:bg-surface-dark">
-      <div className="mx-auto flex max-w-5xl flex-col gap-y-1 px-4 py-4 sm:flex-row sm:items-center sm:gap-4 sm:justify-between">
+      <div className="mx-auto flex max-w-screen-2xl flex-col gap-y-1 px-4 py-4 sm:flex-row sm:items-center sm:gap-4 sm:justify-between">
         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
           GitHub Hot
           <svg aria-hidden="true" viewBox="0 0 16 16" className="h-5 w-5 shrink-0" fill="#f66a0a">
