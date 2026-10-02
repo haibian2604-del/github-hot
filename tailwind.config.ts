@@ -9,18 +9,28 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // GitHub 观感基础色（surface brief 钉定）：
-        // 画布（暗 DEFAULT / 亮 light）、暗色卡片、暗色发丝线。
-        // 用法形如 bg-ghcanvas-light dark:bg-ghcanvas、dark:border-ghline。
-        ghcanvas: {
-          DEFAULT: "#0d1117",
-          light: "#f8f9fa",
+        // 铅字榜单（typographic ledger）语义色：画布 / 面 / 发丝线 / 墨色 / 单一强调。
+        // 用法形如 bg-canvas dark:bg-canvas-dark、border-line dark:border-line-dark、
+        // hover:bg-surface dark:hover:bg-surface-dark、text-accent dark:text-accent-dark。
+        canvas: {
+          DEFAULT: "#fafafa",
+          dark: "#101012",
         },
-        ghcard: {
-          DEFAULT: "#161b22",
+        surface: {
+          DEFAULT: "#ffffff",
+          dark: "#18181b",
         },
-        ghline: {
-          DEFAULT: "#30363d",
+        line: {
+          DEFAULT: "#e4e4e7",
+          dark: "#27272a",
+        },
+        ink: {
+          DEFAULT: "#18181b",
+          dark: "#e4e4e7",
+        },
+        accent: {
+          DEFAULT: "#c2410c",
+          dark: "#fb923c",
         },
       },
     },

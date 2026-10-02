@@ -41,35 +41,38 @@ export default function RepoCard({
   since: Since;
 }) {
   return (
-    <li className="h-full">
+    // 榜单行：发丝线分隔替代卡片框。两列网格下首行含第 1、2 名，md 补一条
+    // nth-child(-n+2) 让右列首行同样免掉顶部孤立的 hairline。
+    <li className="h-full border-t border-line first:border-t-0 md:[&:nth-child(-n+2)]:border-t-0 dark:border-line-dark">
       <a
         href={repo.repoUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="flex h-full flex-col overflow-hidden rounded-lg border bg-white px-4 py-4 text-left transition-shadow duration-200 ease-out hover:shadow-md motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-gray-400 dark:border-ghline dark:bg-ghcard dark:focus-visible:ring-gray-500 dark:hover:shadow-black/40"
+        className="group -mx-2 flex h-full flex-col rounded-md px-2 py-4 transition-colors duration-150 ease-out hover:bg-surface motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-accent dark:focus-visible:ring-accent-dark dark:hover:bg-surface-dark"
       >
-        <div className="flex items-start gap-3 sm:gap-4">
+        <span className="flex items-start gap-3">
           <span
-            className={`w-12 shrink-0 text-right text-3xl font-light leading-none tabular-nums sm:w-14 sm:text-4xl ${
-              rank <= 3 ? "text-[#0969da] dark:text-[#4493f8]" : "text-gray-500"
+            className={`tnum w-12 shrink-0 text-right text-3xl leading-none ${
+              rank <= 3 ? "text-accent dark:text-accent-dark" : "text-zinc-400 dark:text-zinc-600"
             }`}
           >
             {rank}
           </span>
 
           <span className="min-w-0 flex-1">
-            <span className="block truncate text-sm text-gray-500 dark:text-gray-400">{repo.owner} /</span>
-            <span className="mt-0.5 block truncate text-xl font-semibold tracking-tight text-gray-900 dark:text-gray-100">
+            <span className="block truncate text-xs text-zinc-500 dark:text-zinc-400">{repo.owner} /</span>
+            <span className="mt-0.5 block truncate text-lg font-semibold tracking-tight text-ink transition-colors duration-150 group-hover:text-accent motion-reduce:transition-none dark:text-ink-dark dark:group-hover:text-accent-dark">
               {repo.name}
             </span>
           </span>
-        </div>
+        </span>
 
-        <span className="mt-1.5 line-clamp-2 text-sm leading-relaxed text-gray-600 dark:text-gray-300">
+        {/* 排名列宽 w-12(3rem) + gap-3(0.75rem) = 3.75rem，与身份行右缘对齐 */}
+        <span className="mt-1.5 line-clamp-2 pl-[3.75rem] text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
           {repo.description || "暂无描述"}
         </span>
 
-        <span className="mt-auto flex flex-wrap items-center gap-x-3 gap-y-1.5 pt-2.5 text-xs tabular-nums text-gray-500 dark:text-gray-400">
+        <span className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-1.5 pl-[3.75rem] pt-2.5 text-xs text-zinc-500 dark:text-zinc-400">
           {repo.language && (
             <span className="inline-flex items-center gap-1.5">
               <span
@@ -82,13 +85,13 @@ export default function RepoCard({
           )}
           <span className="inline-flex items-center gap-1">
             <StarIcon />
-            {formatCompactNumber(repo.stars)}
+            <span className="tnum">{formatCompactNumber(repo.stars)}</span>
           </span>
           <span className="inline-flex items-center gap-1">
             <ForkIcon />
-            {formatCompactNumber(repo.forks)}
+            <span className="tnum">{formatCompactNumber(repo.forks)}</span>
           </span>
-          <span className="inline-flex items-center rounded-full bg-green-50 px-1.5 py-0.5 font-medium text-green-700 dark:bg-[#3fb950]/10 dark:text-[#3fb950]">
+          <span className="inline-flex items-center rounded-full bg-orange-100 px-1.5 py-0.5 font-medium text-orange-800 dark:bg-orange-500/10 dark:text-orange-400">
             {changeLabel(since)} +{formatCompactNumber(repo.change)}
           </span>
           {repo.contributors.length > 0 && (
@@ -100,7 +103,7 @@ export default function RepoCard({
                   src={c.avatar}
                   alt={c.username}
                   loading="lazy"
-                  className={`h-5 w-5 rounded-full ring-2 ring-white dark:ring-ghcard ${
+                  className={`h-5 w-5 rounded-full ring-2 ring-surface dark:ring-surface-dark ${
                     i >= 3 ? "hidden sm:block" : ""
                   }`}
                 />

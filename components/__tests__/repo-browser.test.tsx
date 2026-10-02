@@ -119,7 +119,9 @@ describe("RepoBrowser", () => {
 
   it("shows a result summary line above the list on initial render", () => {
     setup({ lang: "", since: "daily" }, [repo("alpha"), repo("beta")]);
-    expect(screen.getByText(`${changeLabel("daily")} · 全部语言 · 2 个仓库`)).toBeInTheDocument();
+    // 摘要行拆为左右两 span：左 = 周期·语言，右 = mono 计数
+    expect(screen.getByText(`${changeLabel("daily")} · 全部语言`)).toBeInTheDocument();
+    expect(screen.getByText("2 个仓库")).toBeInTheDocument();
   });
 
   it("updates the summary line with the selected language label and count after a language switch", async () => {
@@ -127,9 +129,10 @@ describe("RepoBrowser", () => {
     setup({ lang: "", since: "daily" }, [repo("all-daily")]);
     mockFetch.mockResolvedValueOnce(okResponse([repo("py-a"), repo("py-b"), repo("py-c")]));
     await user.selectOptions(screen.getByRole("combobox"), "python");
-    await waitFor(() =>
-      expect(screen.getByText(`${changeLabel("daily")} · Python · 3 个仓库`)).toBeInTheDocument()
-    );
+    await waitFor(() => {
+      expect(screen.getByText(`${changeLabel("daily")} · Python`)).toBeInTheDocument();
+      expect(screen.getByText("3 个仓库")).toBeInTheDocument();
+    });
   });
 
   it("renders EmptyState when the proxy returns an empty list", async () => {

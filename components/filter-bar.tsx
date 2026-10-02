@@ -39,16 +39,12 @@ export default function FilterBar({
 
   return (
     <div
-      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-gray-200 bg-white/95 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-ghline dark:bg-ghcard/95 ${
+      className={`sticky top-0 z-10 flex flex-col gap-3 border-b border-line bg-canvas/95 py-3 backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between dark:border-line-dark dark:bg-canvas-dark/95 ${
         busy ? "opacity-50" : "opacity-100"
       }`}
       aria-busy={busy}
     >
-      <div
-        role="group"
-        aria-label="时间周期"
-        className="inline-flex self-start rounded-lg border border-gray-300 bg-gray-50 p-0.5 dark:border-ghline dark:bg-ghcanvas"
-      >
+      <div role="group" aria-label="时间周期" className="flex items-end gap-5 self-start">
         {SINCE_TABS.map(({ value, label }) => (
           <button
             key={value}
@@ -56,10 +52,10 @@ export default function FilterBar({
             data-active={filters.since === value}
             aria-pressed={filters.since === value}
             onClick={() => apply({ ...filters, since: value })}
-            className={`rounded-md px-3 py-1 text-sm transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 dark:focus-visible:ring-gray-500 ${
+            className={`relative px-1 pb-2 pt-1 text-sm transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent-dark ${
               filters.since === value
-                ? "bg-gray-900 text-white shadow-sm dark:bg-gray-100 dark:text-gray-900"
-                : "text-gray-700 hover:bg-gray-200/70 dark:text-gray-300 dark:hover:bg-gray-800"
+                ? "font-medium text-ink after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-accent after:content-[''] dark:text-ink-dark dark:after:bg-accent-dark"
+                : "text-zinc-500 hover:text-ink dark:text-zinc-400 dark:hover:text-ink-dark"
             }`}
           >
             {label}
@@ -67,13 +63,13 @@ export default function FilterBar({
         ))}
       </div>
 
-      <label className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-300">
+      <label className="flex items-center gap-2 text-sm text-zinc-500">
         语言
         <span className="relative inline-flex">
           <select
             value={filters.lang}
             onChange={(e) => apply({ ...filters, lang: e.target.value })}
-            className="appearance-none rounded-lg border border-gray-300 bg-white py-1.5 pl-2.5 pr-8 text-sm text-gray-900 transition-colors duration-150 ease-out hover:border-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-400 motion-reduce:transition-none dark:border-ghline dark:bg-ghcanvas dark:text-gray-100 dark:hover:border-gray-500 dark:focus-visible:ring-gray-500"
+            className="appearance-none rounded-lg border border-line bg-surface py-1.5 pl-2.5 pr-8 text-sm text-ink transition-colors duration-150 ease-out hover:border-zinc-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent motion-reduce:transition-none dark:border-line-dark dark:bg-surface-dark dark:text-ink-dark dark:hover:border-zinc-500 dark:focus-visible:ring-accent-dark"
           >
             <option value="">全部语言</option>
             {languages.map((l) => (
@@ -90,7 +86,7 @@ export default function FilterBar({
             strokeWidth="1.5"
             strokeLinecap="round"
             strokeLinejoin="round"
-            className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-gray-500 dark:text-gray-400"
+            className="pointer-events-none absolute right-2.5 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-zinc-500 dark:text-zinc-400"
           >
             <path d="m4 6 4 4 4-4" />
           </svg>

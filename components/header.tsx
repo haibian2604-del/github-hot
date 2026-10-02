@@ -1,6 +1,6 @@
 export default function SiteHeader() {
   return (
-    <header className="border-b bg-white dark:bg-ghcard">
+    <header className="border-b border-line bg-white dark:border-line-dark dark:bg-[#161618]">
       <div className="mx-auto flex max-w-5xl flex-col gap-y-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
           GitHub Hot
@@ -12,7 +12,7 @@ export default function SiteHeader() {
           href="https://github.com/doforce/github-trending"
           target="_blank"
           rel="noopener noreferrer"
-          className="text-xs text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          className="text-xs text-zinc-400 transition-colors duration-150 ease-out hover:text-zinc-600 motion-reduce:transition-none dark:hover:text-zinc-300"
         >
           数据来源：doforce/github-trending
         </a>

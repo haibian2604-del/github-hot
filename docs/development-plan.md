@@ -185,8 +185,8 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 
 ## 8. 样式与主题
 
-- **视觉基调**：GitHub 风格 —— 亮色为主，跟随系统深色模式（`media` 策略的 `dark:` 变体，不引入主题切换按钮，不做本地存储）。
-- 卡片：圆角、1px 边框、hover 阴影/边框微反馈（150–200ms ease-out，motion-reduce 退化）；整卡直链 GitHub，无展开区。
+- **视觉基调**：铅字榜单（typographic ledger，2026-09-24 用户要求重设计，摆脱 GitHub 克隆观感）——亮 #fafafa 画布/暗 #101012，锌灰 hairline 分隔替代卡片框；系统 sans + tnum mono 数字；火焰橙单强调（#c2410c/#fb923c）；跟随系统深色模式（`media` 策略的 `dark:` 变体，不引入主题切换按钮，不做本地存储）。
+- 榜单行：无卡片框，行间 hairline（`border-line`）分隔；hover 面色微反馈（150ms ease-out，motion-reduce 退化）；整行直链 GitHub，无展开区。
 - 语言色点：内置 30+ 常见语言的 GitHub 官方色（TypeScript 蓝、Python 黄绿…），未知语言统一中性灰。
 - 响应式：移动端（<768px）单列；≥768px 仓库列表为两列网格，容器最大宽度 `max-w-5xl` 居中（2026-09-24 用户确认由单列改为两列）。头像堆叠在窄屏自动隐藏至 3 个。
 

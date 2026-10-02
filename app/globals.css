@@ -5,7 +5,7 @@
 /*
  * 系统字体栈（含中文回退）。
  * body 的画布底色 / 前景色由 app/layout.tsx 的 Tailwind 工具类提供
- * （bg-ghcanvas-light dark:bg-ghcanvas 等），此处不再另行覆盖。
+ * （bg-canvas text-ink dark:bg-canvas-dark dark:text-ink-dark 等），此处不再另行覆盖。
  */
 body {
   font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial,
@@ -15,5 +15,11 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+  /* 榜单数字专用等宽栈：排名 / 星标数 / 仓库计数等纵向扫读时逐位对齐 */
+  .tnum {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono",
+      monospace;
+    font-variant-numeric: tabular-nums;
   }
 }
