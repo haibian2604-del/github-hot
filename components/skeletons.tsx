@@ -13,12 +13,12 @@ export function CardSkeleton() {
         <div className="min-w-0 flex-1">
           {/* 身份行 */}
           <div className="h-3 w-24 animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
-          <div className="mt-2 h-5 w-2/3 animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
+          <div className="mt-0.5 h-7 w-2/3 animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
           {/* 描述两行 */}
-          <div className="mt-3 h-4 w-full animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
+          <div className="mt-1.5 h-6 w-full animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
           <div className="mt-2 h-4 w-3/4 animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
           {/* 元信息行：语言点+星标/复刻/增量 chip */}
-          <div className="mt-3 flex items-center gap-3">
+          <div className="mt-3 flex items-center gap-4">
             <div className="h-3.5 w-20 animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
             <div className="h-3.5 w-14 animate-pulse rounded bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />
             <div className="h-3.5 w-14 animate-pulse rounded-full bg-zinc-200 motion-reduce:animate-none dark:bg-zinc-800" />

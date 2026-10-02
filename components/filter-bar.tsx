@@ -52,7 +52,7 @@ export default function FilterBar({
             data-active={filters.since === value}
             aria-pressed={filters.since === value}
             onClick={() => apply({ ...filters, since: value })}
-            className={`relative px-1 pb-2 pt-1 text-sm transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent-dark ${
+            className={`relative px-2 pb-2 pt-1 text-sm transition-colors duration-150 ease-out motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent dark:focus-visible:ring-accent-dark ${
               filters.since === value
                 ? "font-medium text-ink after:absolute after:inset-x-0 after:bottom-0 after:h-0.5 after:bg-accent after:content-[''] dark:text-ink-dark dark:after:bg-accent-dark"
                 : "text-zinc-500 hover:text-ink dark:text-zinc-400 dark:hover:text-ink-dark"

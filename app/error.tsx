@@ -5,7 +5,7 @@ export default function ErrorPage({ reset }: { error: Error & { digest?: string 
     <main className="mx-auto max-w-5xl px-4 py-16">
       <div className="rounded-lg border border-line bg-surface px-6 py-12 text-center dark:border-line-dark dark:bg-surface-dark">
         <h1 className="text-lg font-semibold text-ink dark:text-ink-dark">数据加载失败</h1>
-        <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-300">
           无法从上游获取 trending 数据，请稍后重试。
         </p>
         <button

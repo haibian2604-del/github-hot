@@ -52,8 +52,8 @@ export default function RepoCard({
       >
         <span className="flex items-start gap-3">
           <span
-            className={`tnum w-12 shrink-0 text-right text-3xl leading-none ${
-              rank <= 3 ? "text-accent dark:text-accent-dark" : "text-zinc-400 dark:text-zinc-600"
+            className={`tnum w-12 shrink-0 text-right text-3xl font-medium leading-none ${
+              rank <= 3 ? "text-accent dark:text-accent-dark" : "text-zinc-400 dark:text-zinc-500"
             }`}
           >
             {rank}

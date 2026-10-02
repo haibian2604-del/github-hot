@@ -54,7 +54,7 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={label}
       title={label}
-      className="rounded-md p-1.5 text-zinc-500 hover:text-ink hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-ink-dark dark:hover:bg-surface-dark transition-colors duration-150 motion-reduce:transition-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="rounded-md p-2.5 text-zinc-500 hover:text-ink hover:bg-zinc-100 dark:text-zinc-400 dark:hover:text-ink-dark dark:hover:bg-surface-dark transition-colors duration-150 motion-reduce:transition-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       {isDark ? (
         <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-5 w-5">

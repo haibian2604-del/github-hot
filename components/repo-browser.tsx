@@ -203,7 +203,7 @@ export default function RepoBrowser({
         ) : (
           <>
             {/* 结果摘要：让筛选变化立即可见 —— 即使选中语言恰为整体榜的前几名（列表是原榜子集），周期/语言/条数也明确变了 */}
-            <p className="mt-4 flex items-baseline justify-between text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="flex items-baseline justify-between text-xs text-zinc-500 dark:text-zinc-400">
               <span>
                 {changeLabel(filters.since)} · {filters.lang ? langLabel : "全部语言"}
               </span>
