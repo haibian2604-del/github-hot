@@ -38,13 +38,14 @@ export default function FilterBar({
   const busy = pending || transitionPending;
 
   return (
-    // 浮动胶囊：吸顶容器与胶囊合一（根元素需承载 aria-busy 契约），sticky top-0 直接贴顶，无全宽横带
-    <div
-      className={`mx-auto mt-3 flex max-w-5xl flex-col gap-3 rounded-2xl border border-line/70 bg-white/90 py-2 pl-5 pr-2 shadow-[0_10px_30px_-15px_rgba(24,24,27,0.25)] backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between sm:rounded-full dark:border-line-dark/60 dark:bg-surface-dark/90 dark:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.6)] ${
-        busy ? "opacity-50" : "opacity-100"
-      }`}
-      aria-busy={busy}
-    >
+    // 悬浮胶囊：sticky top-3 吸顶，滚动时钉在视口顶部悬浮于内容之上（top-3 留呼吸缝隙，周围透出滚动内容属该模式正常观感）；无全宽横带
+    <div className="sticky top-3 z-20 mt-3" aria-busy={busy}>
+      <div
+        className={`mx-auto flex max-w-5xl flex-col gap-3 rounded-2xl border border-line/70 bg-white/90 py-2 pl-5 pr-2 shadow-[0_10px_30px_-15px_rgba(24,24,27,0.25)] backdrop-blur transition-opacity duration-200 ease-out motion-reduce:transition-none sm:flex-row sm:items-center sm:justify-between sm:rounded-full dark:border-line-dark/60 dark:bg-surface-dark/90 dark:shadow-[0_10px_30px_-15px_rgba(0,0,0,0.6)] ${
+          busy ? "opacity-50" : "opacity-100"
+        }`}
+        aria-busy={busy}
+      >
       <div role="group" aria-label="时间周期" className="flex items-center gap-1 self-start">
         {SINCE_TABS.map(({ value, label }) => (
           <button
@@ -93,6 +94,7 @@ export default function FilterBar({
           </svg>
         </span>
       </label>
+      </div>
     </div>
   );
 }
