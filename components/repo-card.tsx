@@ -91,7 +91,7 @@ export default function RepoCard({
             <ForkIcon />
             <span className="tnum">{formatCompactNumber(repo.forks)}</span>
           </span>
-          <span className="inline-flex items-center rounded-full bg-orange-100 px-1.5 py-0.5 font-medium text-orange-800 dark:bg-orange-500/10 dark:text-orange-400">
+          <span className="tnum inline-flex items-center rounded-full bg-orange-100 px-1.5 py-0.5 font-medium text-orange-800 dark:bg-orange-500/10 dark:text-orange-400">
             {changeLabel(since)} +{formatCompactNumber(repo.change)}
           </span>
           {repo.contributors.length > 0 && (

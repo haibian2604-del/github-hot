@@ -176,10 +176,10 @@ export async function fetchLanguages(): Promise<LanguageOption[]>
 
 | 状态 | 呈现 |
 |---|---|
-| 加载中 | `loading.tsx` 骨架屏（筛选栏 + 5 张卡片形状），切换筛选同样触发 |
+| 加载中 | `loading.tsx` 骨架屏（下划线 tab 骨架 + 6 张榜单行骨架），切换筛选同样触发 |
 | 上游失败/超时 | `error.tsx`：错误提示 + 「重试」按钮（`router.refresh()`） |
 | 返回空数组 | EmptyState：说明可能原因（该语言本周暂无 trending）+ 「查看全部」快捷入口 |
-| desc 为空 | 卡片内占位文案，不留空白 |
+| desc 为空 | 榜单行内占位文案，不留空白 |
 
 ---
 

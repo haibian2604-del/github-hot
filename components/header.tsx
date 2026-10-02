@@ -1,6 +1,6 @@
 export default function SiteHeader() {
   return (
-    <header className="border-b border-line bg-white dark:border-line-dark dark:bg-[#161618]">
+    <header className="border-b border-line bg-white dark:border-line-dark dark:bg-surface-dark">
       <div className="mx-auto flex max-w-5xl flex-col gap-y-1 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
         <h1 className="flex items-center gap-2 text-2xl font-bold tracking-tight">
           GitHub Hot
