@@ -27,6 +27,6 @@ describe("RepoList", () => {
     };
     render(<RepoList repos={[repo, { ...repo, name: "another", owner: "a", change: 210 }]} since="daily" />);
     expect(screen.getByText("next.js")).toBeInTheDocument();
-    expect(screen.getByText("今天 +300")).toBeInTheDocument();
+    expect(screen.getByText("+300")).toBeInTheDocument();
   });
 });

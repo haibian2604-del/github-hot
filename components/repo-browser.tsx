@@ -191,9 +191,9 @@ export default function RepoBrowser({
         onFilterChange={handleFilterChange}
       />
       {/* pending 期间以骨架屏替代旧列表（替代原先的半透明冻结感）；FilterBar 始终可交互 */}
-      <div aria-busy={pending} className="mt-4">
+      <div aria-busy={pending} className="results">
         {pending ? (
-          <ul aria-hidden="true" className="grid grid-cols-1 gap-x-8 gap-y-0 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+          <ul aria-hidden="true" className="repo-grid">
             {Array.from({ length: 6 }).map((_, i) => (
               <CardSkeleton key={i} />
             ))}
@@ -203,13 +203,13 @@ export default function RepoBrowser({
         ) : (
           <>
             {/* 结果摘要：让筛选变化立即可见 —— 即使选中语言恰为整体榜的前几名（列表是原榜子集），周期/语言/条数也明确变了 */}
-            <p className="flex items-baseline justify-between text-xs text-zinc-500 dark:text-zinc-400">
+            <p className="results-summary">
               <span>
                 {changeLabel(filters.since)} · {filters.lang ? langLabel : "全部语言"}
               </span>
               <span className="tnum">{repos.length} 个仓库</span>
             </p>
-            <div className="mt-3">
+            <div className="mt-1">
               <RepoList repos={repos} since={filters.since} />
             </div>
           </>

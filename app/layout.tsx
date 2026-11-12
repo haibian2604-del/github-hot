@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import SiteHeader from "@/components/header";
 import "./globals.css";
 
@@ -28,15 +27,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
       </head>
-      <body className="min-h-screen bg-canvas text-ink antialiased dark:bg-canvas-dark dark:text-ink-dark">
+      <body id="top" className="min-h-screen bg-canvas text-ink antialiased dark:bg-canvas-dark dark:text-ink-dark">
         <SiteHeader />
         {children}
-        <footer className="border-t border-line bg-white dark:border-line-dark dark:bg-surface-dark">
-          <div className="mx-auto max-w-screen-2xl px-4 py-6 text-center text-xs text-zinc-500 dark:text-zinc-400">
-            数据来自公共 API，仅供学习浏览 ·{" "}
-            <Link href="/" className="hover:underline">
-              回到顶部
-            </Link>
+        <footer className="site-footer">
+          <div className="page-width flex flex-col gap-2 py-6 text-xs sm:flex-row sm:items-center sm:justify-between">
+            <a href="#top" className="source-link" aria-label="回到顶部">GitHub Hot · 回到顶部</a>
+            <a href="https://github.com/doforce/github-trending" target="_blank" rel="noopener noreferrer" className="source-link">
+              数据来源：doforce/github-trending
+            </a>
           </div>
         </footer>
       </body>
