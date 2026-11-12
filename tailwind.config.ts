@@ -10,24 +10,25 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // 铅字榜单（typographic ledger）语义色：画布 / 面 / 发丝线 / 墨色 / 单一强调。
+        signal: "#f4ce46",
+        // 深墨索引：暖白画布、橙色增长、黄色导视。
         // 用法形如 bg-canvas dark:bg-canvas-dark、border-line dark:border-line-dark、
         // hover:bg-surface dark:hover:bg-surface-dark、text-accent dark:text-accent-dark。
         canvas: {
-          DEFAULT: "#fafafa",
-          dark: "#101012",
+          DEFAULT: "#f5f3ed",
+          dark: "#191d1b",
         },
         surface: {
-          DEFAULT: "#ffffff",
-          dark: "#18181b",
+          DEFAULT: "#fbfaf6",
+          dark: "#242925",
         },
         line: {
-          DEFAULT: "#e4e4e7",
-          dark: "#27272a",
+          DEFAULT: "#d9dcd3",
+          dark: "#383f39",
         },
         ink: {
-          DEFAULT: "#18181b",
-          dark: "#e4e4e7",
+          DEFAULT: "#202421",
+          dark: "#eeeee5",
         },
         accent: {
           DEFAULT: "#c2410c",

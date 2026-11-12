@@ -18,7 +18,11 @@ export default async function HomePage({
   const repos = await fetchTrending({ lang, since: filters.since });
 
   return (
-    <main className="mx-auto max-w-screen-2xl px-4 pb-12">
+    <main className="page-width pb-12">
+      <div className="page-heading">
+        <h2 className="text-[1.75rem] font-semibold leading-tight tracking-tight sm:text-[2rem]">开源热榜<span className="text-accent dark:text-accent-dark">.</span></h2>
+        <p className="muted text-sm">发现 GitHub 上值得关注的项目</p>
+      </div>
       <RepoBrowser initialFilters={{ ...filters, lang }} initialRepos={repos} languages={languages} />
     </main>
   );

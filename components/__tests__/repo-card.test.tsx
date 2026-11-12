@@ -26,7 +26,8 @@ describe("RepoCard collapsed content", () => {
     expect(screen.getByText(/Financial services workflows/u)).toBeInTheDocument();
     expect(screen.getByText("Python")).toBeInTheDocument();
     expect(screen.getByText("36.7k")).toBeInTheDocument();
-    expect(screen.getByText("本周 +665")).toBeInTheDocument();
+    expect(screen.getByText("+665")).toBeInTheDocument();
+    expect(screen.getByRole("link")).toHaveAccessibleName(/本周 \+665/u);
   });
 
   it("shows placeholder when description is empty", () => {
